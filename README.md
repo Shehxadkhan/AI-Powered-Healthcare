@@ -1,12 +1,5 @@
-Create login modal with Admin and User options
-Create registration page/modal
-Add 'My Meal and Nutrition Plan' tab for logged-in users
-Implement authentication system (localStorage + Firebase)
-Add guest mode detection and alert message
-Modify Get Started button to open login
 
-
-# AI Nutrition & Health Recommendation System
+# AI-Powered Healthcare Platform System
 
 A modern, AI-powered web application that generates personalized nutrition plans using machine learning. Built with vanilla HTML, CSS, and JavaScript, featuring TensorFlow.js for intelligent meal recommendations.
 
@@ -346,4 +339,5 @@ For questions or suggestions, please open an issue on the repository.
 **Built with ❤️ using AI and Machine Learning**
 
 *This application is for educational and informational purposes only. Always consult with a healthcare professional before making significant changes to your diet or nutrition plan.*
+
 
