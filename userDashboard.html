@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Dashboard - AI Nutrition & Health</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="userDashboard.css">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="user-header-nav">
+        <div class="header-container">
+            <a href="index.html" class="logo">
+                <div class="logo-icon">AI</div>
+                <span>AI Nutrition</span>
+            </a>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="index.html#team">Team</a></li>
+                    <li><a href="userDashboard.html" class="nav-active">My Dashboard</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- User Dashboard Section -->
+    <section class="user-section">
+        <div class="user-container">
+            <div class="user-header">
+                <div>
+                    <h2 class="user-title">My Nutrition Dashboard</h2>
+                    <p class="user-subtitle">View and manage your personalized nutrition plans</p>
+                </div>
+                <div class="user-actions">
+                    <input type="text" id="userNameInput" placeholder="Enter your name" class="user-name-input">
+                    <button class="user-refresh-btn" id="refreshDataBtn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="23 4 23 10 17 10"></polyline>
+                            <polyline points="1 20 1 14 7 14"></polyline>
+                            <path d="M3.51 9a9 9 0 0 1 14.85-3.48L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                        </svg>
+                        Refresh
+                    </button>
+                </div>
+            </div>
+
+            <!-- Statistics Cards -->
+            <div class="user-stats" id="userStats">
+                <div class="stat-card">
+                    <div class="stat-icon">📋</div>
+                    <div class="stat-content">
+                        <h3 id="totalPlans">0</h3>
+                        <p>Total Plans</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🍽️</div>
+                    <div class="stat-content">
+                        <h3 id="totalMeals">0</h3>
+                        <p>Custom Meals</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🎯</div>
+                    <div class="stat-content">
+                        <h3 id="avgCalories">0</h3>
+                        <p>Avg Calories</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">📊</div>
+                    <div class="stat-content">
+                        <h3 id="latestPlanDate">-</h3>
+                        <p>Latest Plan</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">💪</div>
+                    <div class="stat-content">
+                        <h3 id="activeGoal">-</h3>
+                        <p>Current Goal</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Search and Filter -->
+            <div class="user-controls">
+                <div class="search-box">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.35-4.35"></path>
+                    </svg>
+                    <input type="text" id="searchInput" placeholder="Search by goal or condition...">
+                </div>
+                <select id="filterSelect" class="filter-select">
+                    <option value="all">All Plans</option>
+                    <option value="weight-loss">Weight Loss</option>
+                    <option value="weight-gain">Weight Gain</option>
+                    <option value="fitness">Fitness</option>
+                    <option value="healthy-diet">Healthy Diet</option>
+                </select>
+            </div>
+
+            <!-- Welcome Message -->
+            <div class="user-welcome" id="userWelcome" style="display: none;">
+                <div class="welcome-icon">👋</div>
+                <h3>Welcome to Your Dashboard!</h3>
+                <p>Enter your name above to view your nutrition plans, or create a new plan on the home page.</p>
+            </div>
+
+            <!-- Loading State -->
+            <div class="user-loading" id="userLoading" style="display: none;">
+                <div class="loading-spinner"></div>
+                <p>Loading your plans...</p>
+            </div>
+
+            <!-- Plans Section -->
+            <div class="dashboard-section">
+                <h3 class="section-title">📋 My Nutrition Plans</h3>
+                <div class="user-plans-grid" id="userPlansGrid" style="display: none;">
+                    <!-- Plans will be populated here -->
+                </div>
+            </div>
+
+            <!-- Meals Section -->
+            <div class="dashboard-section">
+                <h3 class="section-title">🍽️ My Custom Meals</h3>
+                <div class="user-plans-grid" id="userMealsGrid" style="display: none;">
+                    <!-- Meals will be populated here -->
+                </div>
+            </div>
+
+            <!-- Empty State -->
+            <div class="user-empty" id="userEmpty" style="display: none;">
+                <div class="empty-icon">📭</div>
+                <h3>No Plans Found</h3>
+                <p>No nutrition plans found for your name. Create your first plan on the home page!</p>
+                <a href="index.html" class="create-plan-btn">Create New Plan</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Plan Detail Modal -->
+    <div class="popup-overlay" id="planDetailOverlay">
+        <div class="popup-container user-detail-container">
+            <button class="popup-close" id="closePlanDetail">&times;</button>
+            <div id="planDetailContent"></div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <p>&copy; 2024 AI Nutrition & Health Recommendation System. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="firebase.js"></script>
+    <script src="userDashboard.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - AI Nutrition & Health</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <style>
+        .register-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--background-secondary) 0%, var(--white) 100%);
+            padding: 2rem;
+        }
+
+        .register-container {
+            background: var(--white);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-lg);
+            padding: 3rem;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        .register-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .register-header h1 {
+            font-size: 2rem;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .register-header p {
+            color: var(--text-gray);
+            font-size: 0.95rem;
+        }
+
+        .register-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group label {
+            font-weight: 500;
+            color: var(--text-dark);
+            font-size: 0.9rem;
+        }
+
+        .form-group input {
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--border-light);
+            border-radius: var(--radius-md);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(123, 44, 191, 0.1);
+        }
+
+        .form-group input.error {
+            border-color: #DC2626;
+        }
+
+        .form-group .error-text {
+            color: #DC2626;
+            font-size: 0.85rem;
+            display: none;
+        }
+
+        .form-group .error-text.show {
+            display: block;
+        }
+
+        .form-submit {
+            width: 100%;
+            padding: 0.875rem;
+            background: var(--primary-color);
+            color: var(--white);
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 0.5rem;
+        }
+
+        .form-submit:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .form-submit:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .register-footer {
+            text-align: center;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-light);
+        }
+
+        .register-footer p {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .register-footer a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .register-footer a:hover {
+            text-decoration: underline;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+            transition: var(--transition);
+        }
+
+        .back-link:hover {
+            color: var(--primary-dark);
+        }
+
+        .error-message {
+            background: #FEE2E2;
+            color: #DC2626;
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius-md);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .success-message {
+            background: #D1FAE5;
+            color: #059669;
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius-md);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        .password-strength {
+            margin-top: 0.25rem;
+            font-size: 0.85rem;
+        }
+
+        .password-strength.weak {
+            color: #DC2626;
+        }
+
+        .password-strength.medium {
+            color: #F59E0B;
+        }
+
+        .password-strength.strong {
+            color: #059669;
+        }
+
+        @media (max-width: 768px) {
+            .register-container {
+                padding: 2rem 1.5rem;
+            }
+
+            .register-header h1 {
+                font-size: 1.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="register-page">
+        <div class="register-container">
+            <a href="index.html" class="back-link">
+                ← Back to Home
+            </a>
+            
+            <div class="register-header">
+                <h1>Create Account</h1>
+                <p>Register to save your plans and access more features</p>
+            </div>
+
+            <div class="error-message" id="errorMessage"></div>
+            <div class="success-message" id="successMessage"></div>
+
+            <form class="register-form" id="registerForm">
+                <div class="form-group">
+                    <label for="registerName">Full Name</label>
+                    <input type="text" id="registerName" name="name" placeholder="Enter your full name" required>
+                    <span class="error-text" id="nameError"></span>
+                </div>
+                <div class="form-group">
+                    <label for="registerEmail">Email</label>
+                    <input type="email" id="registerEmail" name="email" placeholder="Enter your email" required>
+                    <span class="error-text" id="emailError"></span>
+                </div>
+                <div class="form-group">
+                    <label for="registerPassword">Password</label>
+                    <input type="password" id="registerPassword" name="password" placeholder="Create a password (min. 6 characters)" required minlength="6">
+                    <span class="error-text" id="passwordError"></span>
+                    <div class="password-strength" id="passwordStrength"></div>
+                </div>
+                <div class="form-group">
+                    <label for="registerConfirmPassword">Confirm Password</label>
+                    <input type="password" id="registerConfirmPassword" name="confirmPassword" placeholder="Confirm your password" required>
+                    <span class="error-text" id="confirmPasswordError"></span>
+                </div>
+                <button type="submit" class="form-submit" id="submitBtn">Register</button>
+            </form>
+
+            <div class="register-footer">
+                <p>Already have an account? <a href="login.html">Login here</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const registerForm = document.getElementById('registerForm');
+        const errorMessage = document.getElementById('errorMessage');
+        const successMessage = document.getElementById('successMessage');
+        const submitBtn = document.getElementById('submitBtn');
+        const passwordInput = document.getElementById('registerPassword');
+        const passwordStrength = document.getElementById('passwordStrength');
+        const confirmPasswordInput = document.getElementById('registerConfirmPassword');
+
+        // Password strength indicator
+        passwordInput.addEventListener('input', () => {
+            const password = passwordInput.value;
+            if (password.length === 0) {
+                passwordStrength.textContent = '';
+                return;
+            }
+
+            let strength = 'weak';
+            let text = 'Weak password';
+
+            if (password.length >= 8 && /[A-Z]/.test(password) && /[0-9]/.test(password)) {
+                strength = 'strong';
+                text = 'Strong password';
+            } else if (password.length >= 6) {
+                strength = 'medium';
+                text = 'Medium password';
+            }
+
+            passwordStrength.textContent = text;
+            passwordStrength.className = `password-strength ${strength}`;
+        });
+
+        // Real-time password match validation
+        confirmPasswordInput.addEventListener('input', () => {
+            const password = passwordInput.value;
+            const confirmPassword = confirmPasswordInput.value;
+            const errorText = document.getElementById('confirmPasswordError');
+
+            if (confirmPassword.length > 0 && password !== confirmPassword) {
+                confirmPasswordInput.classList.add('error');
+                errorText.textContent = 'Passwords do not match';
+                errorText.classList.add('show');
+            } else {
+                confirmPasswordInput.classList.remove('error');
+                errorText.classList.remove('show');
+            }
+        });
+
+        // Form validation
+        function validateForm() {
+            const name = document.getElementById('registerName').value.trim();
+            const email = document.getElementById('registerEmail').value.trim();
+            const password = passwordInput.value;
+            const confirmPassword = confirmPasswordInput.value;
+
+            let isValid = true;
+
+            // Clear previous errors
+            document.querySelectorAll('.error-text').forEach(el => {
+                el.classList.remove('show');
+            });
+            document.querySelectorAll('input').forEach(el => {
+                el.classList.remove('error');
+            });
+
+            // Validate name
+            if (name.length < 2) {
+                document.getElementById('nameError').textContent = 'Name must be at least 2 characters';
+                document.getElementById('nameError').classList.add('show');
+                document.getElementById('registerName').classList.add('error');
+                isValid = false;
+            }
+
+            // Validate email
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                document.getElementById('emailError').textContent = 'Please enter a valid email address';
+                document.getElementById('emailError').classList.add('show');
+                document.getElementById('registerEmail').classList.add('error');
+                isValid = false;
+            }
+
+            // Validate password
+            if (password.length < 6) {
+                document.getElementById('passwordError').textContent = 'Password must be at least 6 characters';
+                document.getElementById('passwordError').classList.add('show');
+                passwordInput.classList.add('error');
+                isValid = false;
+            }
+
+            // Validate password match
+            if (password !== confirmPassword) {
+                document.getElementById('confirmPasswordError').textContent = 'Passwords do not match';
+                document.getElementById('confirmPasswordError').classList.add('show');
+                confirmPasswordInput.classList.add('error');
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
+        // Form submission
+        registerForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Hide messages
+            errorMessage.classList.remove('show');
+            successMessage.classList.remove('show');
+
+            // Validate form
+            if (!validateForm()) {
+                errorMessage.textContent = 'Please fix the errors above';
+                errorMessage.classList.add('show');
+                return;
+            }
+
+            const name = document.getElementById('registerName').value.trim();
+            const email = document.getElementById('registerEmail').value.trim();
+            const password = passwordInput.value;
+
+            // Disable submit button
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Registering...';
+
+            try {
+                // Create new user object
+                const newUser = {
+                    id: 'user_' + Date.now(),
+                    name: name,
+                    email: email,
+                    password: password,
+                    createdAt: new Date().toISOString()
+                };
+
+                // Try to save to Firebase first
+                if (typeof saveUserToFirebase === 'function') {
+                    const result = await saveUserToFirebase(newUser);
+                    
+                    if (!result.success) {
+                        if (result.exists) {
+                            throw new Error('Email already registered. Please login instead.');
+                        } else {
+                            console.warn('Failed to save to Firebase, saving to localStorage as fallback:', result.error);
+                            // Continue with localStorage fallback
+                        }
+                    } else {
+                        console.log('User saved to Firebase successfully');
+                        // Update user ID with Firebase document ID if available
+                        if (result.userDocId) {
+                            newUser.firebaseId = result.userDocId;
+                        }
+                    }
+                }
+
+                // Also save to localStorage as backup and for quick access
+                const users = JSON.parse(localStorage.getItem('nutritionAppUsers') || '[]');
+                // Check localStorage for duplicates
+                if (!users.find(u => u.email === email)) {
+                    users.push(newUser);
+                    localStorage.setItem('nutritionAppUsers', JSON.stringify(users));
+                }
+
+                // Auto login
+                const authData = {
+                    user: newUser,
+                    userType: 'user'
+                };
+                localStorage.setItem('nutritionAppAuth', JSON.stringify(authData));
+
+                successMessage.textContent = 'Registration successful! Redirecting...';
+                successMessage.classList.add('show');
+
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 1500);
+            } catch (error) {
+                errorMessage.textContent = error.message || 'Registration failed. Please try again.';
+                errorMessage.classList.add('show');
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Register';
+            }
+        });
+
+        // Check if already logged in
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedAuth = localStorage.getItem('nutritionAppAuth');
+            if (savedAuth) {
+                try {
+                    const authData = JSON.parse(savedAuth);
+                    if (authData.userType === 'admin') {
+                        window.location.href = 'adminDashboard.html';
+                    } else {
+                        window.location.href = 'index.html';
+                    }
+                } catch (e) {
+                    console.error('Error parsing auth data:', e);
+                }
+            }
+        });
+    </script>
+    <script src="firebase.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en" itemscope itemtype="https://schema.org/WebApplication">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Nutrition & Health Recommendation System - Personalized Meal Plans</title>
+    <meta name="description" content="Get personalized AI-powered nutrition plans, meal recommendations, and health insights tailored to your unique profile. Start your journey to better health today.">
+    <meta name="keywords" content="AI nutrition, personalized meal plans, health recommendations, diet planning, nutrition advice, health insights">
+    <meta name="author" content="AI Nutrition & Health Team">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://ai-nutrition-health.com/">
+    <meta property="og:title" content="AI Nutrition & Health Recommendation System">
+    <meta property="og:description" content="Get personalized AI-powered nutrition plans and health insights">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=1200&h=630&fit=crop">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://ai-nutrition-health.com/">
+    <meta property="twitter:title" content="AI Nutrition & Health Recommendation System">
+    <meta property="twitter:description" content="Get personalized AI-powered nutrition plans and health insights">
+    <meta property="twitter:image" content="https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=1200&h=630&fit=crop">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!-- TensorFlow.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.15.0/dist/tf.min.js"></script>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <!-- jsPDF for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <!-- Chart.js for visualizations -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <a href="#" class="logo">
+                <div class="logo-icon">AI</div>
+                <span> Nutrition</span>
+            </a>
+            <nav>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <!-- <li><a href="#about">About</a></li> -->
+                    <li><a href="#services">Services</a></li>
+                    <!-- <li><a href="#how-it-works">How It Works</a></li>
+                    <li><a href="#features">Features</a></li> -->
+                    <!-- <li><a href="#testimonials">Testimonials</a></li>
+                    <li><a href="#faq">FAQ</a></li> -->
+                    <li><a href="#team">Our Team</a></li>
+                    <!-- <li><a href="adminDashboard.html" class="nav-cta">Admin</a></li> -->
+                    <li id="authMenuItems">
+                        <!-- <a href="login.html" class="nav-cta" id="loginBtn">Login</a> -->
+                        <!-- <a href="register.html" class="nav-cta" id="registerBtn" style="margin-left: 10px;">Sign Up</a> -->
+                    </li>
+                    <li><a href="login.html" class="nav-cta" id="getStartedBtn">Get Started</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home" itemscope itemtype="https://schema.org/SoftwareApplication">
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1>Your Personalized AI Nutrition & Health Companion</h1>
+                <p>Get tailored meal plans, daily health insights, and AI-powered recommendations designed specifically for your unique health profile and goals.</p>
+                <div class="hero-buttons">
+                    <button class="hero-cta" id="startCheckBtn">Start My Nutrition Check</button>
+                    <button class="hero-cta hero-meal-builder" id="heroMealBuilderBtn">
+                        <span class="hero-meal-icon">🔧</span>
+                        <span>Build Your Meal</span>
+                    </button>
+                    <!-- <button class="hero-cta hero-ai-assistant" id="heroChatbotBtn">
+                        <span class="hero-ai-icon">🤖</span>
+                        <span>AI Assistant</span>
+                    </button> -->
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="hero-illustration">
+                    <img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=600&h=400&fit=crop&q=80" alt="Healthy nutrition meal with fresh vegetables, eggs, and avocado arranged beautifully on a plate" class="hero-img">
+                    <div class="hero-overlay"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="services-section" id="services">
+        <div class="section-container">
+            <h2 class="section-title">Our Services</h2>
+            <p class="section-subtitle">Comprehensive AI-powered health and wellness solutions</p>
+            <div class="services-grid">
+                <!-- <div class="service-card">
+                    <div class="service-icon">🍎</div>
+                    <h3>AI Nutrition Planning</h3>
+                    <p>Get personalized meal plans and nutrition recommendations tailored to your health goals and conditions.</p>
+                    <a href="#contact" class="service-btn">Get Started</a>
+                </div> -->
+                <div class="service-card service-featured">
+                    <div class="service-badge">New</div>
+                    <div class="service-icon">🧠</div>
+                    <h3>AI Mental Health Assistant</h3>
+                    <p>24/7 emotional support, mood tracking, and evidence-based mental wellness guidance from our compassionate AI assistant.</p>
+                    <a href="AI Mental Health Assistant/index.html" class="service-btn service-btn-primary">Try Now</a>
+                </div>
+                <div class="service-card service-featured">
+                    <div class="service-badge">New</div>
+                    <div class="service-icon">🏥</div>
+                    <h3>AI Medical Report Analyzer</h3>
+                    <p>Upload any lab report and get instant AI explanations of test values, normal ranges, potential risks, and recommended next steps.</p>
+                    <a href="AI Medical Report Analyzer/index.html" class="service-btn service-btn-primary">Analyze Report</a>
+                </div>
+                <div class="service-card service-featured">
+                    <div class="service-badge">New</div>
+                    <div class="service-icon">💊</div>
+                    <h3>AI Drug Interaction Checker</h3>
+                    <p>Enter your medications to check interactions instantly. Get AI-powered warnings about dangerous combinations, safe usage notes, and better alternatives.</p>
+                    <a href="AI Drug Interaction Checker/index.html" class="service-btn service-btn-primary">Check Interactions</a>
+                </div>
+                <!-- <div class="service-card">
+                    <div class="service-icon">📊</div>
+                    <h3>Health Analytics</h3>
+                    <p>Track your progress, monitor your health metrics, and get insights into your wellness journey.</p>
+                    <a href="#contact" class="service-btn">Learn More</a>
+                </div> -->
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="how-it-works" id="how-it-works">
+        <div class="section-container">
+            <h2 class="section-title">How It Works</h2>
+            <p class="section-subtitle">Get your personalized nutrition plan in just a few simple steps</p>
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <h3>Share Your Details</h3>
+                    <p>Tell us about your age, weight, health conditions, and wellness goals to help us understand your unique needs.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <h3>AI Analysis</h3>
+                    <p>Our advanced AI analyzes your information and creates a personalized nutrition plan tailored to your profile.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <h3>Get Your Plan</h3>
+                    <p>Receive your customized meal plan with detailed recommendations, daily insights, and health tips.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">4</div>
+                    <h3>Track & Improve</h3>
+                    <p>Monitor your progress with daily health insights and receive updated recommendations as you progress.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="section-container">
+            <h2 class="section-title">Powerful Features</h2>
+            <p class="section-subtitle">Everything you need for a healthier lifestyle</p>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🍽️</div>
+                    <h3>Personalized Meal Plan</h3>
+                    <p>Get custom meal plans designed specifically for your dietary needs, preferences, and health goals. Each plan is tailored to optimize your nutrition.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Daily Health Insights</h3>
+                    <p>Receive daily personalized health insights and recommendations to help you make informed decisions about your nutrition and wellness.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚠️</div>
+                    <h3>Risk Alerts</h3>
+                    <p>Stay informed with intelligent risk alerts that notify you about potential health concerns based on your profile and dietary patterns.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🤖</div>
+                    <h3>AI-Powered Recommendations</h3>
+                    <p>Leverage cutting-edge AI technology to get smart, data-driven recommendations that adapt to your changing needs and progress.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Team Section -->
+    <section class="team" id="team">
+        <div class="section-container">
+            <h2 class="section-title">Our Team</h2>
+            <p class="section-subtitle">Meet the talented developers behind this AI-powered nutrition platform</p>
+            <div class="team-grid">
+                <!-- Team Leader -->
+                <div class="team-card team-leader">
+                    <div class="team-avatar">
+                        <div class="avatar-circle leader-badge">
+                            <img src="team-pics/Shehzad-leader.jpg" alt="Shehzad Khan - Team Leader" class="avatar-image">
+                            <div class="leader-crown">👑</div>
+                        </div>
+                    </div>
+                    <div class="team-info">
+                        <h3>Shehzad Khan</h3>
+                        <p class="team-role">Team Leader</p>
+                        <p class="team-bio">Leading the development of AI-powered nutrition solutions</p>
+                        <div class="team-skills">
+                            <span class="skill-tag">AI/ML</span>
+                            <span class="skill-tag">Full Stack</span>
+                            <span class="skill-tag">Leadership</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Team Members -->
+                <div class="team-card">
+                    <div class="team-avatar">
+                        <div class="avatar-circle">
+                            <img src="team-pics/Aisha-shabir.jpeg" alt="Aisha shabir - Team Member" class="avatar-image">
+                        </div>
+                    </div>
+                    <div class="team-info">
+                        <h3>Aisha shabir</h3>
+                        <p class="team-role">Contributor</p>
+                        <p class="team-bio">Contributing to frontend  development</p>
+                        <div class="team-skills">
+                            <span class="skill-tag">Developer</span>
+                            
+                        </div>
+                    </div>
+                </div>
+
+                <div class="team-card">
+                    <div class="team-avatar">
+                        <div class="avatar-circle">
+                            <img src="team-pics/Nooria-Mazhar.jpeg" alt="Nooria Mazhar - Team Member" class="avatar-image">
+                        </div>
+                    </div>
+                    <div class="team-info">
+                        <h3>Nooria Mazhar </h3>
+                        <p class="team-role">Contributor</p>
+                        <p class="team-bio">Bachelors of Business administration</p>
+                        <div class="team-skills">
+                            <span class="skill-tag">Developer</span>
+                         
+                        </div>
+                    </div>
+                </div>
+
+                <div class="team-card">
+                    <div class="team-avatar">
+                        <div class="avatar-circle">
+                            <img src="team-pics/jamal-khan.jpeg" alt="Jamal Khan - Team Member" class="avatar-image">
+                        </div>
+                    </div>
+                    <div class="team-info">
+                        <h3>Jamal Khan</h3>
+                        <p class="team-role">Contributor</p>
+                        <p class="team-bio">Contributing to Mobile UI</p>
+                        <div class="team-skills">
+                            <span class="skill-tag">flutter</span>
+                           
+                        </div>
+                    </div>
+                </div>
+
+                <div class="team-card">
+                    <div class="team-avatar">
+                        <div class="avatar-circle">
+                            <span class="avatar-initial">TM4</span>
+                        </div>
+                    </div>
+                    <div class="team-info">
+                        <h3>Alishba Mehfooz</h3>
+                        <p class="team-role">Developer</p>
+                        <p class="team-bio">Contributing to Presentatio and Slides</p>
+                        <div class="team-skills">
+                            <span class="skill-tag">Graphic Designer</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="team-card">
+                    <div class="team-avatar">
+                        <div class="avatar-circle">
+                            <span class="avatar-initial">TM5</span>
+                            <!-- <img src="team-pics/kainat-abid.jpeg" alt="Kainat abid - Team Member" class="avatar-image"> -->
+                        </div>
+                    </div>
+                    <div class="team-info">
+                        <h3>Kainat abid</h3>
+                        <p class="team-role">Business administration</p>
+                        <p class="team-bio">Contributing to Backend</p>
+                        <div class="team-skills">
+                            <span class="skill-tag">Backend</span>
+                           
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services-section" id="services">
+        <div class="section-container">
+            <h2 class="section-title">Our Services</h2>
+            <p class="section-subtitle">Comprehensive AI-powered health and wellness solutions</p>
+            <div class="services-grid">
+                <!-- <div class="service-card">
+                    <div class="service-icon">🍎</div>
+                    <h3>AI Nutrition Planning</h3>
+                    <p>Get personalized meal plans and nutrition recommendations tailored to your health goals and conditions.</p>
+                    <a href="#contact" class="service-btn">Get Started</a>
+                </div> -->
+                <div class="service-card service-featured">
+                    <div class="service-badge">New</div>
+                    <div class="service-icon">🧠</div>
+                    <h3>AI Mental Health Assistant</h3>
+                    <p>24/7 emotional support, mood tracking, and evidence-based mental wellness guidance from our compassionate AI assistant.</p>
+                    <a href="AI Mental Health Assistant/index.html" class="service-btn service-btn-primary">Try Now</a>
+                </div>
+                <div class="service-card service-featured">
+                    <div class="service-badge">New</div>
+                    <div class="service-icon">🏥</div>
+                    <h3>AI Medical Report Analyzer</h3>
+                    <p>Upload any lab report and get instant AI explanations of test values, normal ranges, potential risks, and recommended next steps.</p>
+                    <a href="AI Medical Report Analyzer/index.html" class="service-btn service-btn-primary">Analyze Report</a>
+                </div>
+                <div class="service-card service-featured">
+                    <div class="service-badge">New</div>
+                    <div class="service-icon">💊</div>
+                    <h3>AI Drug Interaction Checker</h3>
+                    <p>Enter your medications to check interactions instantly. Get AI-powered warnings about dangerous combinations, safe usage notes, and better alternatives.</p>
+                    <a href="AI Drug Interaction Checker/index.html" class="service-btn service-btn-primary">Check Interactions</a>
+                </div>
+                <!-- <div class="service-card">
+                    <div class="service-icon">📊</div>
+                    <h3>Health Analytics</h3>
+                    <p>Track your progress, monitor your health metrics, and get insights into your wellness journey.</p>
+                    <a href="#contact" class="service-btn">Learn More</a>
+                </div> -->
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about-section" id="about">
+        <div class="section-container">
+            <h2 class="section-title">About Us</h2>
+            <p class="section-subtitle">Empowering healthier lives through AI-powered nutrition</p>
+            <div class="about-content">
+                <div class="about-text">
+                    <h3>Our Mission</h3>
+                    <p>To make personalized nutrition accessible to everyone by leveraging cutting-edge AI technology. We believe that everyone deserves a nutrition plan tailored to their unique health profile, lifestyle, and goals.</p>
+                    
+                    <h3>Our Vision</h3>
+                    <p>To become the leading platform for AI-driven nutrition and health recommendations, helping millions of people achieve their wellness goals through personalized, data-driven insights.</p>
+                    
+                    <h3>Why Choose Us?</h3>
+                    <ul class="about-list">
+                        <li>✅ AI-powered personalized recommendations</li>
+                        <li>✅ Evidence-based nutrition science</li>
+                        <li>✅ Privacy-first approach to your data</li>
+                        <li>✅ Easy-to-follow meal plans</li>
+                        <li>✅ Continuous health monitoring and insights</li>
+                        <li>✅ Support for various health conditions</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials-section" id="testimonials">
+        <div class="section-container">
+            <h2 class="section-title">What Our Users Say</h2>
+            <p class="section-subtitle">Real stories from people who transformed their health</p>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
+                    <p class="testimonial-text">"This AI nutrition platform changed my life! The personalized meal plan helped me lose 15kg in 3 months while maintaining my energy levels. Highly recommended!"</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">SM</div>
+                        <div>
+                            <h4>Sarah Mitchell</h4>
+                            <p>Weight Loss Success</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
+                    <p class="testimonial-text">"As someone with diabetes, finding the right meal plan was challenging. This platform created a perfect plan that keeps my blood sugar stable. Amazing!"</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">JD</div>
+                        <div>
+                            <h4>John Davis</h4>
+                            <p>Diabetes Management</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
+                    <p class="testimonial-text">"The AI recommendations are spot-on! I've gained healthy weight and improved my fitness levels. The meal plans are delicious and easy to follow."</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">MJ</div>
+                        <div>
+                            <h4>Maria Johnson</h4>
+                            <p>Fitness Enthusiast</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section" id="faq">
+        <div class="section-container">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            <p class="section-subtitle">Everything you need to know about our platform</p>
+            <div class="faq-container">
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">
+                        <span>How does the AI nutrition plan work?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Our AI analyzes your age, weight, health conditions, and goals to create a personalized nutrition plan. It uses machine learning algorithms trained on nutritional science to recommend optimal calorie intake, macronutrient distribution, and meal suggestions tailored specifically to your profile.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">
+                        <span>Is my personal data safe and private?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Yes, absolutely! We take your privacy seriously. All data is encrypted and stored securely. We never share your personal information with third parties. You can read our full Privacy Policy for more details.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">
+                        <span>Can I customize my meal plan?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Yes! The AI generates personalized recommendations based on your preferences and health conditions. The meal plans are designed to be flexible and can be adjusted based on your dietary restrictions, allergies, or food preferences.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">
+                        <span>How accurate are the calorie calculations?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Our calorie calculations are based on the Mifflin-St Jeor equation, which is considered one of the most accurate methods for calculating Basal Metabolic Rate (BMR). The AI then adjusts these calculations based on your activity level and goals.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">
+                        <span>Do I need to consult a doctor before using this?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>While our platform provides valuable nutrition guidance, it's always recommended to consult with a healthcare professional, especially if you have existing health conditions. Our recommendations are meant to complement, not replace, professional medical advice.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">
+                        <span>Can I download my nutrition plan?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Yes! You can download your personalized nutrition plan in PDF or text format. This allows you to access your plan offline and share it with your healthcare provider if needed.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact-section" id="contact">
+        <div class="section-container">
+            <h2 class="section-title">Get In Touch</h2>
+            <p class="section-subtitle">Have questions? We'd love to hear from you!</p>
+            <div class="contact-container">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <div class="contact-icon">📧</div>
+                        <div>
+                            <h3>Email Us</h3>
+                            <p><a href="mailto:tipspromax@gmail.com">tipspromax@gmail.com</a></p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">📱</div>
+                        <div>
+                            <h3>Call Us</h3>
+                            <p><a href="tel:03010908515">03010908515</a></p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">📍</div>
+                        <div>
+                            <h3>Visit Us</h3>
+                            <p>Peshawar Hayatabad</p>
+                        </div>
+                    </div>
+                    <div class="contact-social">
+                        <h3>Follow Us</h3>
+                        <div class="social-links">
+                            <a href="#" aria-label="Facebook" class="social-link">📘</a>
+                            <a href="#" aria-label="Twitter" class="social-link">🐦</a>
+                            <a href="#" aria-label="Instagram" class="social-link">📷</a>
+                            <a href="#" aria-label="LinkedIn" class="social-link">💼</a>
+                        </div>
+                    </div>
+                </div>
+                <form class="contact-form" id="contactForm">
+                    <div class="form-group">
+                        <label for="contactName">Your Name</label>
+                        <input type="text" id="contactName" name="name" placeholder="Enter your name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contactEmail">Your Email</label>
+                        <input type="email" id="contactEmail" name="email" placeholder="Enter your email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contactSubject">Subject</label>
+                        <input type="text" id="contactSubject" name="subject" placeholder="What's this about?" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contactMessage">Message</label>
+                        <textarea id="contactMessage" name="message" rows="5" placeholder="Tell us how we can help..." required></textarea>
+                    </div>
+                    <button type="submit" class="form-submit">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>AI Nutrition</h3>
+                    <p>Empowering healthier lives through AI-powered nutrition recommendations.</p>
+                    <div class="footer-social">
+                        <a href="#" aria-label="Facebook">📘</a>
+                        <a href="#" aria-label="Twitter">🐦</a>
+                        <a href="#" aria-label="Instagram">📷</a>
+                        <a href="#" aria-label="LinkedIn">💼</a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#how-it-works">How It Works</a></li>
+                        <li><a href="#team">Our Team</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="#faq">FAQ</a></li>
+                        <li><a href="#contact">Contact Us</a></li>
+                        <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                        <li><a href="terms-of-service.html">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Newsletter</h4>
+                    <p>Subscribe to get health tips and updates</p>
+                    <form class="newsletter-form" id="newsletterForm">
+                        <input type="email" placeholder="Your email" required aria-label="Email address">
+                        <button type="submit">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 AI Nutrition & Health Recommendation System. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Cookie Consent Banner -->
+    <div class="cookie-banner" id="cookieBanner" style="display: none;">
+        <div class="cookie-content">
+            <p>We use cookies to enhance your experience. By continuing to visit this site you agree to our use of cookies. <a href="privacy-policy.html">Learn more</a></p>
+            <div class="cookie-buttons">
+                <button class="cookie-accept" id="acceptCookies">Accept</button>
+                <button class="cookie-decline" id="declineCookies">Decline</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Input Popup Modal -->
+    <div class="popup-overlay" id="popupOverlay">
+        <div class="popup-container">
+            <button class="popup-close" id="closePopup">&times;</button>
+            <div class="popup-header">
+                <h2>Personalize Your Plan</h2>
+                <p>We need a few details to personalize your nutrition plan.</p>
+            </div>
+            <!-- Chatbot Toggle Button -->
+            <!-- <button class="chatbot-toggle-btn" id="chatbotToggleBtn" aria-label="Open AI Assistant">
+                <span class="chatbot-icon">🤖</span>
+                <span class="chatbot-label">AI Assistant</span>
+            </button> -->
+            <form id="nutritionForm">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+                </div>
+                <div class="form-group">
+                    <label for="age">Age</label>
+                    <input type="number" id="age" name="age" placeholder="Enter your age" min="1" max="120" required>
+                </div>
+                <div class="form-group">
+                    <label for="weight">Weight (kg)</label>
+                    <input type="number" id="weight" name="weight" placeholder="Enter your weight in kg" min="1" max="500" step="0.1" required>
+                </div>
+                <div class="form-group">
+                    <label for="height">Height (cm)</label>
+                    <input type="number" id="height" name="height" placeholder="Enter your height in cm" min="50" max="250" step="1" value="170">
+                    <small style="color: var(--text-gray); font-size: 0.85rem;">Optional (default: 170cm)</small>
+                </div>
+                <div class="form-group">
+                    <label for="healthCondition">Health Condition</label>
+                    <select id="healthCondition" name="healthCondition" required>
+                        <option value="">Select a condition</option>
+                        <option value="diabetes">Diabetes</option>
+                        <option value="high-bp">High BP</option>
+                        <option value="heart-issue">Heart Issue</option>
+                        <option value="none">None</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="goal">Goal</label>
+                    <select id="goal" name="goal" required>
+                        <option value="">Select your goal</option>
+                        <option value="weight-loss">Weight Loss</option>
+                        <option value="weight-gain">Weight Gain</option>
+                        <option value="fitness">Fitness</option>
+                        <option value="healthy-diet">Healthy Diet</option>
+                    </select>
+                </div>
+                <button type="submit" class="form-submit" id="submitBtn" aria-label="Generate your personalized nutrition plan">Generate My Plan</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Results Popup Modal -->
+    <div class="popup-overlay" id="resultsOverlay">
+        <div class="popup-container results-container">
+            <button class="popup-close" id="closeResults">&times;</button>
+            <div id="resultsContent">
+                <!-- Tabs for logged-in users -->
+                <div class="results-tabs" id="resultsTabs" style="display: none;">
+                    <button class="result-tab active" data-tab="plan">Nutrition Plan</button>
+                    <button class="result-tab" data-tab="meals">My Meals</button>
+                </div>
+                <div id="resultsTabContent"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Meal Builder Modal (Element Bars Style) -->
+    <div class="popup-overlay" id="mealBuilderOverlay">
+        <div class="popup-container meal-builder-modal">
+            <button class="popup-close" id="closeMealBuilder">&times;</button>
+            <div class="meal-builder-header">
+                <h2>🔧 Build Your Custom Meal</h2>
+            </div>
+            <div id="mealBuilderContent"></div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div class="popup-overlay" id="loginOverlay">
+        <div class="popup-container login-modal">
+            <button class="popup-close" id="closeLogin">&times;</button>
+            <div class="login-header">
+                <h2>Welcome Back!</h2>
+                <p>Please login to continue</p>
+            </div>
+            <div class="login-tabs">
+                <button class="login-tab active" data-tab="user">User Login</button>
+                <button class="login-tab" data-tab="admin">Admin Login</button>
+            </div>
+            <form class="login-form" id="loginForm">
+                <div class="form-group">
+                    <label for="loginEmail">Email</label>
+                    <input type="email" id="loginEmail" name="email" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" name="password" placeholder="Enter your password" required>
+                </div>
+                <button type="submit" class="form-submit">Login</button>
+                <div class="login-footer">
+                    <p>Don't have an account? <a href="#" id="showRegister">Register here</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Registration Modal -->
+    <div class="popup-overlay" id="registerOverlay">
+        <div class="popup-container register-modal">
+            <button class="popup-close" id="closeRegister">&times;</button>
+            <div class="register-header">
+                <h2>Create Account</h2>
+                <p>Register to save your plans and access more features</p>
+            </div>
+            <form class="register-form" id="registerForm">
+                <div class="form-group">
+                    <label for="registerName">Full Name</label>
+                    <input type="text" id="registerName" name="name" placeholder="Enter your full name" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerEmail">Email</label>
+                    <input type="email" id="registerEmail" name="email" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerPassword">Password</label>
+                    <input type="password" id="registerPassword" name="password" placeholder="Create a password" required minlength="6">
+                </div>
+                <div class="form-group">
+                    <label for="registerConfirmPassword">Confirm Password</label>
+                    <input type="password" id="registerConfirmPassword" name="confirmPassword" placeholder="Confirm your password" required>
+                </div>
+                <button type="submit" class="form-submit">Register</button>
+                <div class="register-footer">
+                    <p>Already have an account? <a href="#" id="showLogin">Login here</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Floating Chatbot Button (Right Side) -->
+    <button class="floating-chatbot-btn" id="floatingChatbotBtn" aria-label="Open AI Assistant">
+        <span class="chatbot-icon-large">🤖</span>
+        <span class="chatbot-pulse"></span>
+    </button>
+
+    <!-- Chatbot Panel (Outside popup, works independently) -->
+    <div class="chatbot-panel" id="chatbotPanel">
+        <div class="chatbot-header">
+            <div class="chatbot-header-content">
+                <div class="chatbot-avatar">🤖</div>
+                <div>
+                    <h3>AI Nutrition Assistant</h3>
+                    <p>I'm here to help you with your nutrition plan</p>
+                </div>
+            </div>
+            <button class="chatbot-close" id="chatbotCloseBtn" aria-label="Close chatbot">&times;</button>
+        </div>
+        <div class="chatbot-messages" id="chatbotMessages">
+            <div class="chatbot-message bot-message">
+                <div class="message-avatar">🤖</div>
+                <div class="message-content">
+                    <p>Hello! I'm your AI Nutrition Assistant. I can help you:</p>
+                    <ul>
+                        <li>Understand nutrition requirements</li>
+                        <li>Answer questions about the form</li>
+                        <li>Provide meal planning tips</li>
+                        <li>Explain health conditions and goals</li>
+                    </ul>
+                    <p>What would you like to know?</p>
+                </div>
+            </div>
+        </div>
+        <div class="chatbot-input-container">
+            <input 
+                type="text" 
+                id="chatbotInput" 
+                class="chatbot-input" 
+                placeholder="Ask me anything about nutrition..."
+                aria-label="Chatbot input"
+            >
+            <button type="button" class="chatbot-send-btn" id="chatbotSendBtn" aria-label="Send message">
+                <span>➤</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Structured Data for SEO -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "AI Nutrition & Health Recommendation System",
+        "description": "Get personalized AI-powered nutrition plans and health insights",
+        "url": "https://ai-nutrition-health.com",
+        "applicationCategory": "HealthApplication",
+        "operatingSystem": "Web",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.8",
+            "reviewCount": "127"
+        }
+    }
+    </script>
+
+    <script src="firebase.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
